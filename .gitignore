@@ -1,0 +1,10 @@
+#Ignore virtual environment
+env/
+
+#Ignore workspace
+SKU_dashboard.code-workspace
+
+#Ignore .env
+.env
+
+data/
