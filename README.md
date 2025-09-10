@@ -14,3 +14,6 @@ A dashboard can accelerate evaluations, improve portfolio profitability and redu
 
 
 ## Technical Documentation
+
+### Dataset
+Source: https://www.kaggle.com/datasets/thedevastator/online-retail-sales-and-customer-data
