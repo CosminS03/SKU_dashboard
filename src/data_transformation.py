@@ -27,8 +27,6 @@ match_mask = (
 rows_to_delete = df[match_mask].index
 df.drop(rows_to_delete, inplace=True)
 
-df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
-
 df.rename(columns={"StockCode": "SKU"}, inplace=True)
 
 df.to_csv("./data/interim/online_retail_transformed.csv", index=False)
