@@ -23,6 +23,7 @@ match_mask = (
     | prices_zero
     | letters_only_stock_code
     | letters_numbers_stock_code
+    | sym_stock_code
 )
 rows_to_delete = df[match_mask].index
 df.drop(rows_to_delete, inplace=True)
