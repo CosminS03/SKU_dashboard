@@ -4,6 +4,5 @@ SKU_dashboard.code-workspace
 data/
 notebooks/*.ipynb
 __pycache__/
-*.pyc
-*.egg-info/
+sku_dashboard.egg-info/
 .ipynb_checkpoints/
