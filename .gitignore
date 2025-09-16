@@ -3,3 +3,7 @@ SKU_dashboard.code-workspace
 .env
 data/
 notebooks/*.ipynb
+__pycache__/
+*.pyc
+*.egg-info/
+.ipynb_checkpoints/
