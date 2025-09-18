@@ -33,8 +33,6 @@ def percent_of_total_plot(data: pd.DataFrame, feature: str, title: str):
 
     df["Cumulative"] = df[feature].cumsum() / df[feature].sum() * 100
 
-    sku_order = df["SKU"].to_list()
-
     fig, ax1 = plt.subplots()
 
     cutoff_mask = df["Cumulative"] <= 80
@@ -43,7 +41,7 @@ def percent_of_total_plot(data: pd.DataFrame, feature: str, title: str):
         for c in cutoff_mask
     ]
 
-    sns.barplot(x="SKU", y=feature, data=df, ax=ax1, palette=palette, order=sku_order)
+    ax1.bar(x=df.index, height=df[feature], width=1.0, color=palette)
     ax1.set_ylabel("")
     ax1.set_xlabel("")
     ax1.set_xticks([])
