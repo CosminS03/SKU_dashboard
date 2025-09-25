@@ -5,6 +5,7 @@ from scipy.stats.mstats import winsorize
 import pandas as pd
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
+import plotly.graph_objects as go
 
 
 def violin_plot(data: pd.Series, name: str):
@@ -73,3 +74,56 @@ def percent_of_total_plot(data: pd.DataFrame, feature: str, title: str):
 
     plt.title(f"{title} Pareto chart")
     plt.show()
+
+
+def waterfall_plot(df: pd.DataFrame, sales: bool):
+    df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
+    df["Month"] = df["InvoiceDate"].dt.strftime("%Y-%m")
+
+    if sales:
+        waterfall = (
+            df[~df["InvoiceNo"].str.startswith("C")]
+            .groupby(by="Month")["Quantity"]
+            .sum()
+        )
+    else:
+        waterfall = (
+            df[df["InvoiceNo"].str.startswith("C")]
+            .groupby(by="Month")["Quantity"]
+            .sum()
+            .abs()
+        )
+
+    waterfall = waterfall.reset_index()
+    waterfall["Measure"] = "relative"
+    waterfall = waterfall.sort_values(by="Month")
+    waterfall["Measure"].iloc[-1] = "total"
+
+    fig = go.Figure(
+        go.Waterfall(
+            name="Cash flow plot",
+            orientation="v",
+            x=waterfall["Month"],
+            y=waterfall["Quantity"],
+            measure=waterfall["Measure"],
+        )
+    )
+
+    if sales:
+        fig.update_layout(title="Flow of sales")
+
+        fig.update_traces(
+            increasing=dict(marker=dict(color=config.light_color_palette[4])),
+            totals=dict(marker=dict(color=config.dark_color_palette[2])),
+        )
+
+        fig.show()
+    else:
+        fig.update_layout(title="Flow of purchases")
+
+        fig.update_traces(
+            increasing=dict(marker=dict(color=config.light_color_palette[3])),
+            totals=dict(marker=dict(color=config.dark_color_palette[3])),
+        )
+
+        fig.show()
