@@ -93,7 +93,20 @@ df_str["Sell_through_rate"] = (
     + cfg.wght_2011 * df_str["Sell_through_rate_11"]
 )
 
-skus_to_delete = df_str[df_str["Sell_through_rate"] > 100]["SKU"].to_list()
+skus_to_delete = set(df_str[df_str["Sell_through_rate"] > 100]["SKU"].to_list())
+
+# SKUs that have the total sum of sold units equal to 1
+
+sku_sum = (
+    df[~df["InvoiceNo"].str.startswith("C")]
+    .groupby(by="SKU")["Quantity"]
+    .sum()
+    .reset_index()
+)
+
+skus_to_delete = skus_to_delete | set(
+    sku_sum[sku_sum["Quantity"] == 1]["SKU"].to_list()
+)
 
 df = df[~df["SKU"].isin(skus_to_delete)]
 

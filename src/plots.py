@@ -110,7 +110,7 @@ def waterfall_plot(df: pd.DataFrame, sales: bool):
     )
 
     if sales:
-        fig.update_layout(title="Flow of sales")
+        fig.update_layout(title="Cash Inflows")
 
         fig.update_traces(
             increasing=dict(marker=dict(color=config.light_color_palette[4])),
@@ -119,7 +119,7 @@ def waterfall_plot(df: pd.DataFrame, sales: bool):
 
         fig.show()
     else:
-        fig.update_layout(title="Flow of purchases")
+        fig.update_layout(title="Cash Outflows")
 
         fig.update_traces(
             increasing=dict(marker=dict(color=config.light_color_palette[3])),
