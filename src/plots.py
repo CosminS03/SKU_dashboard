@@ -6,6 +6,7 @@ import pandas as pd
 from matplotlib.patches import Patch
 from matplotlib.lines import Line2D
 import plotly.graph_objects as go
+import numpy as np
 
 
 def violin_plot(data: pd.Series, name: str):
@@ -141,5 +142,51 @@ def ros_distribution(data: pd.Series):
 
     plt.title("Rate of Sale Distribution")
     plt.grid(True, linestyle="--", alpha=0.6)
+
+    plt.show()
+
+
+def revenue_breakdown(df: pd.DataFrame):
+    df["Revenue"] = round(df["Quantity"] * df["UnitPrice"], 2)
+    profit = df.groupby(by="SKU")["Revenue"].sum().reset_index()
+    profit = profit.rename(columns={"Revenue": "Gross_Profit"})
+
+    revenue = (
+        df[~df["InvoiceNo"].str.startswith("C")]
+        .groupby(by="SKU")["Revenue"]
+        .sum()
+        .reset_index()
+    )
+    revenue = revenue.rename(columns={"Revenue": "Total_Revenue"})
+
+    margin = pd.merge(profit, revenue, on="SKU", how="outer")
+    margin = margin.fillna(0)
+    margin["Margin"] = round(
+        (margin["Gross_Profit"] / margin["Total_Revenue"]) * 100, 2
+    )
+    margin["Margin"] = margin["Margin"].replace([np.inf, -np.inf], 0)
+    margin["COGS"] = margin["Total_Revenue"] - margin["Gross_Profit"]
+    margin = margin[(margin["Margin"] != 100) & (margin["Margin"] > 0)].copy()
+    margin["SKU"] = margin["SKU"].astype(str)
+    margin = margin.sort_values(by="Total_Revenue", ascending=False)
+
+    fig, ax = plt.subplots()
+
+    ax.bar(
+        margin["SKU"],
+        margin["Gross_Profit"],
+        label="Gross profit",
+        color=config.light_color_palette[3],
+    )
+    ax.bar(
+        margin["SKU"],
+        margin["COGS"],
+        label="Cost of goods sold",
+        bottom=margin["Gross_Profit"],
+        color=config.light_color_palette[1],
+    )
+    ax.legend()
+    ax.grid(axis="y", linestyle="--", linewidth=0.6, alpha=0.6)
+    plt.xticks(rotation=45)
 
     plt.show()
