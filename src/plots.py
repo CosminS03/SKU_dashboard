@@ -130,7 +130,7 @@ def waterfall_plot(df: pd.DataFrame, sales: bool):
         fig.show()
 
 
-def ros_distribution(data: pd.Series):
+def kpi_distribution(data: pd.Series, kpi: str):
     sns.kdeplot(
         data=data,
         fill=True,
@@ -140,7 +140,7 @@ def ros_distribution(data: pd.Series):
         bw_adjust=0.6,
     )
 
-    plt.title("Rate of Sale Distribution")
+    plt.title(f"{kpi} Distribution")
     plt.grid(True, linestyle="--", alpha=0.6)
 
     plt.show()
