@@ -17,6 +17,7 @@ letters_numbers_stock_code = df["StockCode"].str.contains(
 sym_stock_code = ~(
     letters_only_stock_code | numbers_only_stock_code | letters_numbers_stock_code
 )
+lower_description = ~(df["Description"].str.isupper())
 
 match_mask = (
     neg_non_purchase_invoice
@@ -24,6 +25,7 @@ match_mask = (
     | letters_only_stock_code
     | letters_numbers_stock_code
     | sym_stock_code
+    | lower_description
 )
 rows_to_delete = df[match_mask].index
 df.drop(rows_to_delete, inplace=True)

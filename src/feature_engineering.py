@@ -168,4 +168,16 @@ upt = upt.drop(columns=["Quantity"])
 
 sku_df = pd.merge(sku_df, upt, on="SKU", how="outer")
 
-sku_df.to_csv("./data/processed/sku_kpi.csv", index=False)
+# SKU Description
+sku_description = (
+    df[["SKU", "Description"]]
+    .drop_duplicates(subset=["SKU", "Description"])
+    .groupby(by="SKU")["Description"]
+    .first()
+    .reset_index()
+)
+
+sku_df = pd.merge(sku_df, sku_description, on="SKU", how="left")
+sku_df = sku_df.fillna(0)
+
+sku_df.to_csv("./data/interim/sku_kpi.csv", index=False)
