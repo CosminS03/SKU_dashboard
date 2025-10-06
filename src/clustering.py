@@ -13,4 +13,8 @@ km = KMeans(n_clusters=3, random_state=10, n_init=100)
 labels = km.fit_predict(features_std)
 df["Cluster"] = labels
 
+performance_labels = {0: "Low", 1: "High", 2: "Moderate"}
+df["Performance"] = df["Cluster"].map(performance_labels)
+df = df.drop(columns=["Cluster"])
+
 df.to_csv("./data/processed/clustered_kpis.csv", index=False)
