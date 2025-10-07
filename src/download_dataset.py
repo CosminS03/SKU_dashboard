@@ -5,7 +5,7 @@ import shutil
 
 load_dotenv()
 kaggle_api_key = os.environ.get("KAGGLE_API_KEY")
-download_path = input("Enter the path into which you want to download the dataset: ")
+download_path = "./data/raw"
 os.environ["KAGGLEHUB_CACHE"] = download_path
 dataset_path = kagglehub.dataset_download(
     "thedevastator/online-retail-sales-and-customer-data"
