@@ -65,3 +65,36 @@ K-Means clustering was applied to group SKUs by performance.
 | 2 | Yellow | Moderate |
 
 Low-performing SKUs consistently show lower median values than the global medians for rate of sale, revenue contribution and units per transaction, confirming their potential for retirement.
+
+## Demo Guide
+The code in this repository allows users to reproduce the dataset used in this project in any of its processing stages. To run the project, ensure that Python 3.12.2 is installed for executing scripts and managing dependencies through pip. On Windows, installing Chocolatey si recommended to enable the use of Makefile commands.
+
+Additionally, Git is required to clone the repository and a Kaggle API key must be stored as an enviroment variable named KAGGLE_API_KEY within a .env file to enable automatic dataset download.
+
+To begin, clone the repository and navigate into the project directory:
+```
+git clone https://github.com/CosminS03/SKU_dashboard.git
+cd SKU_dashboard
+```
+
+Next, install all required libraries:
+```
+pip install -r requirements.txt
+```
+
+Once the enviroment is set up, users can generate the fully processed dataset by running:
+```
+make all
+```
+
+This command executes all steps defined in the Makefile. If preferred, each step can also be executed independently:
+| Command | Description |
+| :--- | :--- |
+| make prepare | Creates the data directory containing raw, interim and processed folders. |
+| make download | Downloads the raw dataset from Kaggle and saves it as online_retail.csv in the raw directory |
+| make clean | Fills missing values and saves online_retail_generally_cleaned.csv in the interim directory |
+| make delete | Removes invalid or irrelevant data and saves online_retail_transformed.csv in the interim directory |
+| make outlier | Filters outliers and saves online_retail_no_outliers.csv in the interim directory |
+| make features | Calculates all KPIs and stores sku_kpi.csv in the interim directory |
+| make cluster | Performs clustering and saves clustered_kpis.csv in the processed directory |
+| make cleanup | Removes temporary folders(raw and interim) to clean up the workspace |
