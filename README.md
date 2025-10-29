@@ -66,6 +66,15 @@ K-Means clustering was applied to group SKUs by performance.
 
 Low-performing SKUs consistently show lower median values than the global medians for rate of sale, revenue contribution and units per transaction, confirming their potential for retirement.
 
+#### Sampling
+Given the large number of SKUs in the dataset and the limited space available on the dashboard, a smaller representative sample was created to ensure that the Pareto and revenue composition charts remain readable while still reflecting the original data distribution.
+A custom sampling method was designed to preserve the statistical shape of the dataset by prioritizing values near key quantiles. The process began by ordering SKUs according to their total sales and dividing them into three subsets corresponding to their performance clusters.
+For each subset, the number of values to include around each quantile was determined using the following formula:
+```
+N = int(int(len(subset) / 10) / 5) + 1
+```
+This ensures that the resulting sample is approximately ten times smaller than the original dataset while maintaining representation across all five quartiles. The final sampled dataset includes the quantile points themselves and the N observations preceding Q1, Q2, Q3 and Q4.
+
 ## Demo Guide
 The code in this repository allows users to reproduce the dataset used in this project in any of its processing stages. To run the project, ensure that Python 3.12.2 is installed for executing scripts and managing dependencies through pip. On Windows, installing Chocolatey si recommended to enable the use of Makefile commands.
 
@@ -97,4 +106,4 @@ This command executes all steps defined in the Makefile. If preferred, each step
 | make outlier | Filters outliers and saves online_retail_no_outliers.csv in the interim directory |
 | make features | Calculates all KPIs and stores sku_kpi.csv in the interim directory |
 | make cluster | Performs clustering and saves clustered_kpis.csv in the processed directory |
-| make cleanup | Removes temporary folders(raw and interim) to clean up the workspace |
+| make cleanup | Removes temporary folders(raw and interim) to clean up the workspace |     
