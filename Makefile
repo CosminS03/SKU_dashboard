@@ -26,6 +26,10 @@ cluster:
 	@echo Clustering the SKUs
 	@py src\clustering.py
 
+sample:
+	@echo Creating a sample of the final dataset
+	@py src\sample.py
+
 cleanup:
 	@echo Removing unnecessary created folders
 	@rmdir /s /q data\raw
