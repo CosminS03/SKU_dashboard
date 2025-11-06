@@ -35,4 +35,4 @@ cleanup:
 	@rmdir /s /q data\raw
 	@rmdir /s /q data\interim
 
-all: prepare download clean delete outlier features cluster cleanup
+all: prepare download clean delete outlier features cluster sample cleanup
