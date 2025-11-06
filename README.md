@@ -55,7 +55,7 @@ Before clustering
 ![Data before clustering](notebooks/markdown/0.1-clustering_files/0.1-clustering_4_0.png)
 
 After clustering
-![Date after clustering](notebooks/markdown/0.1-clustering_files/0.1-clustering_8_0.png)
+![Data after clustering](notebooks/markdown/0.1-clustering_files/0.1-clustering_8_0.png)
 
 K-Means clustering was applied to group SKUs by performance.
 | Cluster | Color | Label |
@@ -67,13 +67,31 @@ K-Means clustering was applied to group SKUs by performance.
 Low-performing SKUs consistently show lower median values than the global medians for rate of sale, revenue contribution and units per transaction, confirming their potential for retirement.
 
 #### Sampling
-Given the large number of SKUs in the dataset and the limited space available on the dashboard, a smaller representative sample was created to ensure that the Pareto and revenue composition charts remain readable while still reflecting the original data distribution.
+Given the large number of SKUs in the dataset and the limited space available on the dashboard, a smaller representative sample was created to ensure that the Pareto and Revenue Composition charts remain readable while still reflecting the original data distribution.
 A custom sampling method was designed to preserve the statistical shape of the dataset by prioritizing values near key quantiles. The process began by ordering SKUs according to their total sales and dividing them into three subsets corresponding to their performance clusters.
 For each subset, the number of values to include around each quantile was determined using the following formula:
 ```
 N = int(int(len(subset) / 10) / 5) + 1
 ```
 This ensures that the resulting sample is approximately ten times smaller than the original dataset while maintaining representation across all five quartiles. The final sampled dataset includes the quantile points themselves and the N observations preceding Q1, Q2, Q3 and Q4.
+
+#### Dashboard
+The final outcome of this project is an interactive Tableau dashboard:
+![Dashboard](images/Dashboard.png)
+
+The dashboard consists of four visualizations and three sets of interactive buttons. The buttons in the top-left corner allow users to filter SKUs by the performance cluster. When all buttons are selected, all SKUs are displayed. Deselecting a button hides the SKUs in that cluster from all charts.
+
+The two upper charts use color coding to distinguish SKU clusters: blue for High, yellow for Moderate and red for Low performers. Both are based on the sample dataset, ensuring readability while maintaining the overall distribution of the original data.
+
+The Pareto Chart(upper-left) illustrates the Pareto principle in SKU performance. Each bar represents the selected measure(Revenue or Sales), ordered from highest to lowest, while the black line shows the running total of that measure. The buttons beside the chart let the users toggle between the two metrics.
+
+The Revenue Composition chart(upper-right) is a stacked bar chart ranking SKUs from highest to lowest revenue. Each bar is divided into Profit and Cost sections, providing a clear breakdown of each SKU's revenue composition.
+
+The KPI Distribution Chart(lower-left) visualizes the distribution of three key metrics through a bar chart, namely: Rate of Sale(ROS), Sell-Through Rate(STR) and Units per Transaction(UPT). The buttons beside the chart allow users to switch between KPIs, displaying one distribution at a time.
+
+The Clustering Chart(lower-right) provides a clear view of SKU groupings and their performance patterns. It is a two-dimensional scatter plot with Units per Transaction on the X-axis and Revenue Contribution on the Y-axis, while Rate of Sale is represented by a color gradient ranging from white(low values) to blue(high values).
+
+The full interactive dashboard is available on [Tableau Public](https://public.tableau.com/app/profile/cosmin.spanu/viz/SKU_17623529562380/SKUDashboard).
 
 ## Demo Guide
 The code in this repository allows users to reproduce the dataset used in this project in any of its processing stages. To run the project, ensure that Python 3.12.2 is installed for executing scripts and managing dependencies through pip. On Windows, installing Chocolatey si recommended to enable the use of Makefile commands.
@@ -106,4 +124,5 @@ This command executes all steps defined in the Makefile. If preferred, each step
 | make outlier | Filters outliers and saves online_retail_no_outliers.csv in the interim directory |
 | make features | Calculates all KPIs and stores sku_kpi.csv in the interim directory |
 | make cluster | Performs clustering and saves clustered_kpis.csv in the processed directory |
+| make sample | Creates a smaller version of the final dataset and saves sample.csv into the processed directory
 | make cleanup | Removes temporary folders(raw and interim) to clean up the workspace |     
