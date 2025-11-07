@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from src import config as cfg
+import config as cfg
 
 
 def calc_units(df: pd.DataFrame, year: int, sold: bool):

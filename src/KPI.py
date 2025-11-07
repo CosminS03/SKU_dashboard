@@ -1,4 +1,4 @@
-from src import config as cfg
+import config as cfg
 import pandas as pd
 import numpy as np
 
